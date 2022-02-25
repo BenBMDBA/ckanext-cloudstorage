@@ -16,9 +16,8 @@ setup(
     namespace_packages=['ckanext'],
     include_package_data=True,
     zip_safe=False,
-    install_requires=[
-        'apache-libcloud==1.5'
-    ],
+    install_requires=[],
+#        'apache-libcloud==1.5'
     entry_points=(
         """
         [ckan.plugins]
