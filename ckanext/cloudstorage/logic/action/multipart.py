@@ -3,7 +3,7 @@
 import logging
 import datetime
 
-from pylons import config
+#from pylons import config
 from sqlalchemy.orm.exc import NoResultFound
 import ckan.model as model
 import ckan.lib.helpers as h
