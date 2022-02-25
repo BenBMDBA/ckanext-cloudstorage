@@ -7,7 +7,7 @@ import os.path
 from ast import literal_eval
 from datetime import datetime, timedelta
 
-from pylons import config
+#from pylons import config
 from ckan import model
 from ckan.lib import munge
 import ckan.plugins as p
