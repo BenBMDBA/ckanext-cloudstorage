@@ -18,7 +18,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'apache-libcloud==3.4.1'
-    ]
+    ],
     entry_points=(
         """
         [ckan.plugins]
