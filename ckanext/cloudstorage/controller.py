@@ -4,7 +4,8 @@ import os.path
 
 #from pylons import c
 #from pylons.i18n import _
-
+from ckan.common import c
+from ckantoolkit import config
 from ckan import logic, model
 from ckan.lib import base, uploader
 import ckan.lib.helpers as h
