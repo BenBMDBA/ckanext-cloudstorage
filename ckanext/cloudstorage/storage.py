@@ -172,6 +172,8 @@ class ResourceCloudStorage(CloudStorage):
         if isinstance(upload_field_storage, cgi.FieldStorage):
             self.filename = munge.munge_filename(upload_field_storage.filename)
             self.file_upload = upload_field_storage.file
+            logger = logging.getLogger(__name__)
+            logger.debug('ckanext-cloudstorage is instance triggered')
             resource['url'] = self.filename
             resource['url_type'] = 'upload'
             resource['last_modified'] = datetime.utcnow()
@@ -182,6 +184,8 @@ class ResourceCloudStorage(CloudStorage):
             resource['url'] = munge.munge_filename(multipart_name)
             resource['url_type'] = 'upload'
         elif self._clear and resource.get('id'):
+            logger = logging.getLogger(__name__)
+            logger.debug('ckanext-cloudstorage created-but-not-commited resource')
             # Apparently, this is a created-but-not-commited resource whose
             # file upload has been canceled. We're copying the behaviour of
             # ckaenxt-s3filestore here.
