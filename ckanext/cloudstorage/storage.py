@@ -213,11 +213,18 @@ class ResourceCloudStorage(CloudStorage):
             if self.can_use_advanced_azure:
                 from azure.storage import blob as azure_blob
                 from azure.storage.blob.models import ContentSettings
+                
+                from azure.storage.blob import BlobServiceClient
+                connectionstring= "DefaultEndpointsProtocol=https;AccountName=" + self.driver_options['key'] + ";AccountKey=" self.driver_options['secret']
+                blob_service_client = BlobServiceClient.from_connection_string(connectionstring)
+                container_client = blob_service_client.get_container_client(self.container_name)
+            
+                #blob_client = container_client.upload_blob(name =path, data = data)
 
-                blob_service = azure_blob.BlockBlobService(
-                    self.driver_options['key'],
-                    self.driver_options['secret']
-                )
+#                blob_service = azure_blob.BlockBlobService(
+#                    self.driver_options['key'],
+#                    self.driver_options['secret']
+#                )
                 content_settings = None
                 if self.guess_mimetype:
                     content_type, _ = mimetypes.guess_type(self.filename)
@@ -225,16 +232,21 @@ class ResourceCloudStorage(CloudStorage):
                         content_settings = ContentSettings(
                             content_type=content_type
                         )
-
-                return blob_service.create_blob_from_stream(
-                    container_name=self.container_name,
-                    blob_name=self.path_from_filename(
-                        id,
+                return container_client.upload_blob(
+                    name =self.path_from_filename(
+                         id,
                         self.filename
                     ),
-                    stream=self.file_upload,
-                    content_settings=content_settings
-                )
+                    data = self.file_upload)
+                #return blob_service.create_blob_from_stream(
+                #    container_name=self.container_name,
+                #    blob_name=self.path_from_filename(
+                #        id,
+                #        self.filename
+                #    ),
+                #   stream=self.file_upload,
+                #    content_settings=content_settings
+                #)
             else:
                 self.container.upload_object_via_stream(
                     self.file_upload,
@@ -284,7 +296,7 @@ class ResourceCloudStorage(CloudStorage):
         # shared access link instead of simply redirecting to the file.
         if self.can_use_advanced_azure and self.use_secure_urls:
             from azure.storage import blob as azure_blob
-
+            
             blob_service = azure_blob.BlockBlobService(
                 self.driver_options['key'],
                 self.driver_options['secret']
