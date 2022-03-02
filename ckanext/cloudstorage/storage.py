@@ -170,7 +170,7 @@ class ResourceCloudStorage(CloudStorage):
         logger = logging.getLogger(__name__)
         
         logger.debug('upload_field_storage = %s',upload_field_storage)
-        logger.debug('upload_field_storage.keys = %s',upload_field_storage.keys())
+        logger.debug('upload_field_storage type = %s',type(upload_field_storage))
         logger.debug('ckanext-cloudstorage about to check is instance')
         # Check to see if a file has been provided
         if isinstance(upload_field_storage, cgi.FieldStorage):
