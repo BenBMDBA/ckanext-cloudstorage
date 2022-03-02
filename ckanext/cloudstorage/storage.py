@@ -214,13 +214,17 @@ class ResourceCloudStorage(CloudStorage):
         :param id: The resource_id.
         :param max_size: Ignored.
         """
+        logger = logging.getLogger(__name__)
+        logger.debug('upload in ckanext-cloudstorage triggered ')
         if self.filename:
             if self.can_use_advanced_azure:
                 from azure.storage import blob as azure_blob
                 from azure.storage.blob.models import ContentSettings
+                logger.debug('using advanced azure')
                 
                 from azure.storage.blob import BlobServiceClient
                 connectionstring= "DefaultEndpointsProtocol=https;AccountName=" + self.driver_options['key'] + ";AccountKey=" + self.driver_options['secret']
+                logger.debug('%s is our connectionstring' connectionstring)
                 blob_service_client = BlobServiceClient.from_connection_string(connectionstring)
                 container_client = blob_service_client.get_container_client(self.container_name)
             
