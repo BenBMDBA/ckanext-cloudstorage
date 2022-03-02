@@ -171,6 +171,7 @@ class ResourceCloudStorage(CloudStorage):
         
         logger.debug('upload_field_storage = %s',upload_field_storage)
         logger.debug('upload_field_storage type = %s',type(upload_field_storage))
+        logger.debug('upload_field_storage dir = %s',dir(upload_field_storage))
         logger.debug('ckanext-cloudstorage about to check is instance')
         # Check to see if a file has been provided
         if isinstance(upload_field_storage, cgi.FieldStorage):
@@ -201,9 +202,10 @@ class ResourceCloudStorage(CloudStorage):
 
             self.old_filename = old_resource.url
             resource['url_type'] = ''
-        elif isinstance(upload_field_storage, _io.BytesIO):
+        elif isinstance(upload_field_storage, werkzeug.datastructures.FileStorage):
             logger = logging.getLogger(__name__)
-            logger.debug('ckanext-cloudstorage BytesIO is instance triggered')
+            logger.debug('ckanext-cloudstorage werkzeug is instance triggered')
+
 
     def path_from_filename(self, rid, filename):
         """
