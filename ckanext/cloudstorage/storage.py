@@ -216,7 +216,9 @@ class ResourceCloudStorage(CloudStorage):
         """
         logger = logging.getLogger(__name__)
         logger.debug('upload in ckanext-cloudstorage triggered ')
+        logger.debug('%s is our file', self.filename)
         if self.filename:
+            logger.debug('has filename')
             if True: #self.can_use_advanced_azure:
                 from azure.storage import blob as azure_blob
                 from azure.storage.blob.models import ContentSettings
