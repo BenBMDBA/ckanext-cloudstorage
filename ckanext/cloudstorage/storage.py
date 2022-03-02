@@ -6,6 +6,7 @@ import os.path
 #import urlparse
 from ast import literal_eval
 from datetime import datetime, timedelta
+import logging
 
 #from pylons import config
 #from ckan.common import config
@@ -103,6 +104,8 @@ class CloudStorage(object):
         """
         # Are we even using Azure?
         if self.driver_name == 'AZURE_BLOBS':
+            logger = logging.getLogger(__name__)
+            logger.debug('about to check for azure storage')
             try:
                 # Yes? Is the azure-storage package available?
                 from azure import storage
@@ -110,6 +113,8 @@ class CloudStorage(object):
                 assert storage
                 return True
             except ImportError:
+                logger = logging.getLogger(__name__)
+                logger.debug('import error for azure storage')
                 pass
 
         return False
