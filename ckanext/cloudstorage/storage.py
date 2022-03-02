@@ -201,6 +201,9 @@ class ResourceCloudStorage(CloudStorage):
 
             self.old_filename = old_resource.url
             resource['url_type'] = ''
+        elif isinstance(upload_field_storage, _io.BytesIO):
+            logger = logging.getLogger(__name__)
+            logger.debug('ckanext-cloudstorage BytesIO is instance triggered')
 
     def path_from_filename(self, rid, filename):
         """
