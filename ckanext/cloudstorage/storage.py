@@ -224,7 +224,7 @@ class ResourceCloudStorage(CloudStorage):
                 
                 from azure.storage.blob import BlobServiceClient
                 connectionstring= "DefaultEndpointsProtocol=https;AccountName=" + self.driver_options['key'] + ";AccountKey=" + self.driver_options['secret']
-                logger.debug('%s is our connectionstring' connectionstring)
+                logger.debug('%s is our connection string', connectionstring)
                 blob_service_client = BlobServiceClient.from_connection_string(connectionstring)
                 container_client = blob_service_client.get_container_client(self.container_name)
             
