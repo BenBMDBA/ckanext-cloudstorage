@@ -168,10 +168,11 @@ class ResourceCloudStorage(CloudStorage):
         self._clear = resource.pop('clear_upload', None)
         multipart_name = resource.pop('multipart_name', None)
         logger = logging.getLogger(__name__)
-        logger.debug('ckanext-cloudstorage about to check is instance')
+        
         logger.debug('upload_field_storage = %s',upload_field_storage)
+        logger.debug('ckanext-cloudstorage about to check is instance')
         # Check to see if a file has been provided
-        if isinstance(upload_field_storage, cgi.FieldStorage):
+        if upload_field_storage: #isinstance(upload_field_storage, cgi.FieldStorage):
             self.filename = munge.munge_filename(upload_field_storage.filename)
             self.file_upload = upload_field_storage.file
             logger = logging.getLogger(__name__)
@@ -225,7 +226,7 @@ class ResourceCloudStorage(CloudStorage):
         logger.debug('%s is our file', self.filename)
         if self.filename:
             logger.debug('has filename')
-            if True: #self.can_use_advanced_azure:
+            if self.can_use_advanced_azure:
                 from azure.storage import blob as azure_blob
                 from azure.storage.blob.models import ContentSettings
                 logger.debug('using advanced azure')
