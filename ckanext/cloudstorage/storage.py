@@ -103,7 +103,7 @@ class CloudStorage(object):
         `False`.
         """
         # Are we even using Azure?
-        if true: #self.driver_name == 'AZURE_BLOBS':
+        if True: #self.driver_name == 'AZURE_BLOBS': #forced on by ben 2/3/22
             logger = logging.getLogger(__name__)
             logger.debug('about to check for azure storage')
             try:
