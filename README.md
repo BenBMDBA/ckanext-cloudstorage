@@ -3,6 +3,16 @@
 Implements support for using S3, Azure, or any of 30+ providers supported by
 [libcloud][] to [CKAN][].
 
+# modification notes
+
+This fork has been rewritten to move from pylons to flask and updated to uses the newer Azure blob client API. 
+This involves moving from the pylon config object to the ckan toolkit config.
+passing werkzeug.datastructures.FileStorage object instead of a cgi.FileStorage object
+And removing the url parse dependencies.
+
+In its current state only advanced azure and direct urls are supported
+
+
 # Setup
 
 After installing `ckanext-cloudstorage`, add it to your list of plugins in
