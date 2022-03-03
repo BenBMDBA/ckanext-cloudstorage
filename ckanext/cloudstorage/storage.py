@@ -240,7 +240,7 @@ class ResourceCloudStorage(CloudStorage):
             logger.debug('has filename')
             if self.can_use_advanced_azure:
                 from azure.storage import blob as azure_blob
-                from azure.storage.blob.models import ContentSettings
+                #from azure.storage.blob.models import ContentSettings
                 logger.debug('using advanced azure')
                 
                 from azure.storage.blob import BlobServiceClient
@@ -248,6 +248,7 @@ class ResourceCloudStorage(CloudStorage):
                 logger.debug('%s is our connection string', connectionstring)
                 blob_service_client = BlobServiceClient.from_connection_string(connectionstring)
                 container_client = blob_service_client.get_container_client(self.container_name)
+                blob_service_client.BlobProperties.content_settings()
             
                 #blob_client = container_client.upload_blob(name =path, data = data)
 
@@ -258,10 +259,11 @@ class ResourceCloudStorage(CloudStorage):
                 content_settings = None
                 if self.guess_mimetype:
                     content_type, _ = mimetypes.guess_type(self.filename)
-                    if content_type:
-                        content_settings = ContentSettings(
-                            content_type=content_type
-                        )
+                    # maybe blob_service_client.BlobProperties.content_settings()?
+                    #if content_type:
+                    #    content_settings = ContentSettings(
+                    #        content_type=content_type
+                    #   )
                 return container_client.upload_blob(
                     name =self.path_from_filename(
                          id,
