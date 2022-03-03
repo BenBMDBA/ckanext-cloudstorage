@@ -248,7 +248,7 @@ class ResourceCloudStorage(CloudStorage):
                 logger.debug('%s is our connection string', connectionstring)
                 blob_service_client = BlobServiceClient.from_connection_string(connectionstring)
                 container_client = blob_service_client.get_container_client(self.container_name)
-                blob_service_client.BlobProperties.content_settings()
+                #blob_service_client.BlobProperties.content_settings()
             
                 #blob_client = container_client.upload_blob(name =path, data = data)
 
