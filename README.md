@@ -3,7 +3,7 @@
 Implements support for using S3, Azure, or any of 30+ providers supported by
 [libcloud][] to [CKAN][].
 
-# modification notes
+# Modification notes
 
 This fork has been rewritten to move from pylons to flask and updated to uses the newer Azure blob client API. 
 This involves moving from the pylon config object to the ckan toolkit config.
