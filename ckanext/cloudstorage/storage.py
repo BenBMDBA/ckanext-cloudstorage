@@ -104,7 +104,7 @@ class CloudStorage(object):
         `False`.
         """
         # Are we even using Azure?
-        if True: #self.driver_name == 'AZURE_BLOBS': #forced on by ben 2/3/22
+        if self.driver_name == 'AZURE_BLOBS':
             logger = logging.getLogger(__name__)
             logger.debug('about to check for azure storage')
             try:
@@ -240,22 +240,13 @@ class ResourceCloudStorage(CloudStorage):
             logger.debug('has filename')
             if self.can_use_advanced_azure:
                 from azure.storage import blob as azure_blob
-                #from azure.storage.blob.models import ContentSettings
                 logger.debug('using advanced azure')
                 
                 from azure.storage.blob import BlobServiceClient
                 connectionstring= "DefaultEndpointsProtocol=https;AccountName=" + self.driver_options['key'] + ";AccountKey=" + self.driver_options['secret']
-                logger.debug('%s is our connection string', connectionstring)
                 blob_service_client = BlobServiceClient.from_connection_string(connectionstring)
                 container_client = blob_service_client.get_container_client(self.container_name)
-                #blob_service_client.BlobProperties.content_settings()
-            
-                #blob_client = container_client.upload_blob(name =path, data = data)
 
-#                blob_service = azure_blob.BlockBlobService(
-#                    self.driver_options['key'],
-#                    self.driver_options['secret']
-#                )
                 content_settings = None
                 if self.guess_mimetype:
                     content_type, _ = mimetypes.guess_type(self.filename)
@@ -270,23 +261,9 @@ class ResourceCloudStorage(CloudStorage):
                         self.filename
                     ),
                     data = self.file_upload)
-                #return blob_service.create_blob_from_stream(
-                #    container_name=self.container_name,
-                #    blob_name=self.path_from_filename(
-                #        id,
-                #        self.filename
-                #    ),
-                #   stream=self.file_upload,
-                #    content_settings=content_settings
-                #)
+
             else:
-                self.container.upload_object_via_stream(
-                    self.file_upload,
-                    object_name=self.path_from_filename(
-                        id,
-                        self.filename
-                    )
-                )
+                logger.debug('Not using advanced azure')
 
         elif self._clear and self.old_filename and not self.leave_files:
             # This is only set when a previously-uploaded file is replace
