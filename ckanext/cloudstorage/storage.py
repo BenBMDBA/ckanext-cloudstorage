@@ -206,6 +206,11 @@ class ResourceCloudStorage(CloudStorage):
         elif isinstance(upload_field_storage, werkzeug.datastructures.FileStorage):
             logger = logging.getLogger(__name__)
             logger.debug('ckanext-cloudstorage werkzeug is instance triggered')
+            self.filename = munge.munge_filename(upload_field_storage.filename)
+            self.file_upload = upload_field_storage.stream
+            resource['url'] = self.filename
+            resource['url_type'] = 'upload'
+            resource['last_modified'] = datetime.utcnow()
 
 
     def path_from_filename(self, rid, filename):
