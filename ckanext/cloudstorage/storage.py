@@ -3,14 +3,13 @@
 import cgi
 import mimetypes
 import os.path
-#import urlparse
+
 from ast import literal_eval
 from datetime import datetime, timedelta
 import logging
 import werkzeug
 
-#from pylons import config
-#from ckan.common import config
+
 from ckantoolkit import config
 from ckan import model
 from ckan.lib import munge
@@ -211,7 +210,6 @@ class ResourceCloudStorage(CloudStorage):
             resource['url'] = self.filename
             resource['url_type'] = 'upload'
             resource['last_modified'] = datetime.utcnow()
-
 
     def path_from_filename(self, rid, filename):
         """
