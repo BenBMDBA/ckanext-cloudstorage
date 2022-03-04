@@ -209,7 +209,7 @@ class ResourceCloudStorage(CloudStorage):
             self.file_upload = upload_field_storage.stream
             resource['url'] = self.filename
             resource['url_type'] = 'upload'
-            resource['last_modified'] = datetime.utcnow()
+            resource['last_modified'] = datetime.now()
 
     def path_from_filename(self, rid, filename):
         """
