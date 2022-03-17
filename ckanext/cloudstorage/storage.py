@@ -3,14 +3,11 @@
 import cgi
 import mimetypes
 import os.path
-#import urlparse
 from ast import literal_eval
 from datetime import datetime, timedelta
 import logging
 import werkzeug
 
-#from pylons import config
-#from ckan.common import config
 from ckantoolkit import config
 from ckan import model
 from ckan.lib import munge
@@ -104,7 +101,7 @@ class CloudStorage(object):
         `False`.
         """
         # Are we even using Azure?
-        if True: #self.driver_name == 'AZURE_BLOBS': #forced on by ben 2/3/22
+        if self.driver_name == 'AZURE_BLOBS':
             logger = logging.getLogger(__name__)
             logger.debug('about to check for azure storage')
             try:
@@ -182,7 +179,7 @@ class ResourceCloudStorage(CloudStorage):
             logger.debug('ckanext-cloudstorage is instance triggered')
             resource['url'] = self.filename
             resource['url_type'] = 'upload'
-            resource['last_modified'] = datetime.utcnow()
+            resource['last_modified'] = datetime.utcnow() # server timezone
         elif multipart_name and self.can_use_advanced_aws:
             # This means that file was successfully uploaded and stored
             # at cloud.
@@ -240,45 +237,24 @@ class ResourceCloudStorage(CloudStorage):
             logger.debug('has filename')
             if self.can_use_advanced_azure:
                 from azure.storage import blob as azure_blob
-                #from azure.storage.blob.models import ContentSettings
                 logger.debug('using advanced azure')
                 
                 from azure.storage.blob import BlobServiceClient
                 connectionstring= "DefaultEndpointsProtocol=https;AccountName=" + self.driver_options['key'] + ";AccountKey=" + self.driver_options['secret']
-                logger.debug('%s is our connection string', connectionstring)
                 blob_service_client = BlobServiceClient.from_connection_string(connectionstring)
                 container_client = blob_service_client.get_container_client(self.container_name)
-                #blob_service_client.BlobProperties.content_settings()
-            
-                #blob_client = container_client.upload_blob(name =path, data = data)
 
-#                blob_service = azure_blob.BlockBlobService(
-#                    self.driver_options['key'],
-#                    self.driver_options['secret']
-#                )
                 content_settings = None
                 if self.guess_mimetype:
                     content_type, _ = mimetypes.guess_type(self.filename)
-                    # maybe blob_service_client.BlobProperties.content_settings()?
-                    #if content_type:
-                    #    content_settings = ContentSettings(
-                    #        content_type=content_type
-                    #   )
+
                 return container_client.upload_blob(
                     name =self.path_from_filename(
                          id,
                         self.filename
                     ),
                     data = self.file_upload)
-                #return blob_service.create_blob_from_stream(
-                #    container_name=self.container_name,
-                #    blob_name=self.path_from_filename(
-                #        id,
-                #        self.filename
-                #    ),
-                #   stream=self.file_upload,
-                #    content_settings=content_settings
-                #)
+
             else:
                 self.container.upload_object_via_stream(
                     self.file_upload,
